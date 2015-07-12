@@ -23,28 +23,45 @@ public class Controller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String type = req.getParameter("type");
-        if (type.equals("operation")) {
+        if (type.equals("operationWithOperand")) {
             resp.setContentType("text/plain");
             String operation = req.getParameter("operation");
             Double operand = Double.parseDouble(req.getParameter("value"));
             calculator.setOperand(operand);
             calculator.callOperation(operation);
-            resp.getWriter().write(calculator.getIndicator().toString());
-        } else if (type.equals("M+")) {
+            resp.getWriter().write(calculator.getIndicator().toString().replaceAll("\\.[0]$",""));
+        }else if (type.equals("operationWithoutOperand")) {
             resp.setContentType("text/plain");
-            resp.getWriter().write("M+");
+            String operation = req.getParameter("operation");
+            calculator.callOperation(operation);
+            resp.getWriter().write(calculator.getIndicator().toString().replaceAll("\\.[0]$",""));
+        }else if (type.equals("M+")) {
+            Double operand = Double.parseDouble(req.getParameter("value"));
+            calculator.setOperand(operand);
+            calculator.memoryAdd();
+            resp.getWriter().write(calculator.getIndicator().toString().replaceAll("\\.[0]$",""));
         } else if (type.equals("MC")) {
-            resp.setContentType("text/plain");
-            resp.getWriter().write("MC");
+            calculator.memoryClear();
+            resp.getWriter().write(calculator.getIndicator().toString().replaceAll("\\.[0]$",""));
         } else if (type.equals("MR")) {
-            resp.setContentType("text/plain");
-            resp.getWriter().write("Mr");
+            calculator.memoryRead();
+            resp.getWriter().write(calculator.getIndicator().toString().replaceAll("\\.[0]$",""));
         } else if (type.equals("MS")) {
-            resp.setContentType("text/plain");
-            resp.getWriter().write("MS");
+            Double operand = Double.parseDouble(req.getParameter("value"));
+            calculator.setOperand(operand);
+            calculator.memoryStore();
+            resp.getWriter().write(calculator.getIndicator().toString().replaceAll("\\.[0]$",""));
         } else if (type.equals("CE")) {
-            resp.setContentType("text/plain");
-            resp.getWriter().write("CE");
+            if (calculator.memoryIsEmpty()) {
+                calculator = new Calculator();
+                resp.getWriter().write("");
+            }else {
+                Number temp = calculator.memoryRead();
+                calculator = new Calculator();
+                calculator.setOperand(temp);
+                calculator.memoryStore();
+                resp.getWriter().write("");
+            }
         }
     }
 }

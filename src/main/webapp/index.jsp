@@ -28,7 +28,7 @@
                 <input id="C" value="C" type="reset"/>
             </td>
             <td>
-                <input id="CE" value="CE" type="reset"/>
+                <input id="CE" value="CE" type="button"/>
             </td>
             <td colspan="2">
                 <input class="operation" value="=" type="button" size="100%"/>
@@ -93,7 +93,7 @@
                 <input id="plusMinus" value="+/-" type="button"/>
             </td>
             <td>
-                <input value="." type="button"/>
+                <input id="dot" value="." type="button"/>
             </td>
             <td>
                 <input class="operation" value="+" type="button"/>

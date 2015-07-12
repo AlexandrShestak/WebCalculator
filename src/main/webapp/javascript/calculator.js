@@ -1,4 +1,6 @@
 
+var isOperationEntered = false
+
 $(document).ready(function(){
     $('body').append('<br/>Этот текст добавлен с помощью jQuery');
 });
@@ -7,8 +9,14 @@ $(document).ready(function(){
 /*add numbers to entry field*/
 $(document).ready(function(){
     $('.number').click(function(){
-        var temp = $('.entryField').val()
-        $('.entryField').val(temp+$(this).attr("value"))
+        if(isOperationEntered) {
+            $('.entryField').val('')
+            $('.entryField').val( $(this).attr("value"))
+        }else{
+            var temp = $('.entryField').val()
+            $('.entryField').val(temp + $(this).attr("value"))
+        }
+        isOperationEntered = false
     })
 });
 
@@ -35,16 +43,49 @@ $(document).ready(function(){
     })
 });
 
+/*ajax memethod for operation =,-,+,/,**/
 $(document).ready(function(){
     $('.operation').click(function(){
+        if(isOperationEntered) {
+            var temp = $(this).val()
+            $.ajax({
+                url: 'Controller',
+                data: {
+                    type: 'operationWithoutOperand',
+                    operation: temp
+                },
+                success: function (response) {
+                    $('.entryField').val(response)
+                }
+            });
+        }else{
+            var temp = $(this).val()
+            $.ajax({
+                url: 'Controller',
+                data: {
+                    type: 'operationWithOperand',
+                    operation: temp,
+                    value: $('.entryField').val()
+                },
+                success: function (response) {
+                    $('.entryField').val(response)
+                }
+            });
+        }
+        isOperationEntered = true
+    })
+});
+
+/*ajax method for memory operations*/
+$(document).ready(function(){
+    $('.memory').click(function(){
         var temp = $(this).val()
-        $('body').append('<br/>Этот текст добавлен с помощью jQuery'+temp);
         $.ajax({
             url:'Controller',
             data: {
-                    type:'operation',
-                    operation:temp,
-                    value:$('.entryField').val()
+                type:$(this).val(),
+                operation:temp,
+                value: $('.entryField').val()
             },
             success : function(response){
                 $('.entryField').val(response)
@@ -54,9 +95,8 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-    $('.memory').click(function(){
+    $('#CE').click(function(){
         var temp = $(this).val()
-        $('body').append('<br/>Этот текст добавлен с помощью jQuery'+temp);
         $.ajax({
             url:'Controller',
             data: {
@@ -67,7 +107,23 @@ $(document).ready(function(){
                 $('.entryField').val(response)
             }
         });
+        isOperationEntered = false
     })
 });
+
+$(document).ready(function(){
+    $('#dot').click(function(){
+        var temp = $('.entryField').val()
+        $('.entryField').val(temp+'.')
+    })
+});
+
+
+$(document).ready(function(){
+    $('.entryField').change(function(){
+        isOperationEntered = false
+    })
+});
+
 
 
