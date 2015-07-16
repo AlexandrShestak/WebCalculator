@@ -1,4 +1,3 @@
-
 var isOperationEntered = false
 
 $(document).ready(function(){
@@ -13,8 +12,12 @@ $(document).ready(function(){
             $('.entryField').val('')
             $('.entryField').val( $(this).attr("value"))
         }else{
+
             var temp = $('.entryField').val()
-            $('.entryField').val(temp + $(this).attr("value"))
+            if (temp=="0"){
+                $('.entryField').val($(this).attr("value"))
+            }else
+                  $('.entryField').val(temp + $(this).attr("value"))
         }
         isOperationEntered = false
     })
@@ -125,5 +128,6 @@ $(document).ready(function(){
     })
 });
 
-
-
+$(document).ready(function(){
+    $("#el").draggable()
+});

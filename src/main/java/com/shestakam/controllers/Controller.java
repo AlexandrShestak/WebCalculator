@@ -54,7 +54,7 @@ public class Controller extends HttpServlet {
         } else if (type.equals("CE")) {
             if (calculator.memoryIsEmpty()) {
                 calculator = new Calculator();
-                resp.getWriter().write("");
+                resp.getWriter().write("0");
             }else {
                 Number temp = calculator.memoryRead();
                 calculator = new Calculator();

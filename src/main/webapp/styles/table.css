@@ -7,3 +7,10 @@ table {
 td {
     text-align: center; /* Выравниваем текст по центру ячейки */
 }
+
+.main {
+    border-color: #a90f18;
+    width: 100%;
+}
+
+#draggable{width:125px; height:125px; padding:0.5em; border:1px solid #ddd; background-color:#eee}
